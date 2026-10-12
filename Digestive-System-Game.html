@@ -18,9 +18,9 @@
   }
   h1 { font-size: 22px; margin: 8px 0; text-shadow: 0 2px 4px rgba(0,0,0,.4); }
   #hud {
-    display: flex; gap: 14px; margin-bottom: 8px;
-    background: rgba(255,255,255,.12); padding: 8px 16px; border-radius: 12px;
-    font-size: 14px; flex-wrap: wrap; justify-content: center;
+    display: flex; gap: 14px; margin-bottom: 8px; flex-wrap: wrap; justify-content: center;
+    background: rgba(255,255,255,.12); padding: 8px 18px; border-radius: 12px;
+    font-size: 15px;
   }
   #hud b { color: #ffd54f; }
   #gameWrap {
@@ -38,17 +38,21 @@
   #board svg { display: block; width: 100%; height: auto; }
   .organ { cursor: pointer; transition: filter .15s; }
   .organ:hover { filter: brightness(1.15) drop-shadow(0 0 6px #4fc3f7); }
+  .organ.done { cursor: default; pointer-events: none; }
+  .organ.done path, .organ.done circle, .organ.done ellipse {
+    fill: #a5d6a7 !important; stroke: #2e7d32 !important;
+  }
+  .organ.done { filter: drop-shadow(0 0 5px #66bb6a); }
   .organ.flash-ok { animation: okFlash .6s; }
   .organ.flash-bad { animation: badFlash .5s; }
-  .organ.done { pointer-events: none; cursor: default; }
-  .organ.done path, .organ.done ellipse, .organ.done circle {
-    fill: #81c784 !important;
-    stroke: #2e7d32 !important;
-  }
-  .organ.done path[fill="none"] { fill: none !important; stroke: #81c784 !important; }
-  .organ.done { filter: drop-shadow(0 0 4px rgba(76,175,80,.7)); }
   @keyframes okFlash { 0%,100%{filter:none} 50%{filter:drop-shadow(0 0 14px #00e676) brightness(1.4);} }
   @keyframes badFlash { 0%,100%{filter:none} 25%,75%{filter:drop-shadow(0 0 12px #ff5252) brightness(1.2);} }
+  .organ-label {
+    font-size: 17px; font-weight: bold; fill: #1565c0;
+    paint-order: stroke; stroke: #ffffff; stroke-width: 4px; stroke-linejoin: round;
+    pointer-events: none;
+  }
+  .organ-label-line { stroke: #1565c0; stroke-width: 1.5; fill: none; pointer-events: none; }
   .falling {
     position: absolute;
     left: 0;
@@ -67,17 +71,17 @@
     position: absolute; inset: 0;
     background: rgba(15,25,50,.92);
     display: flex; flex-direction: column;
-    justify-content: flex-start; align-items: center;
-    gap: 10px; z-index: 10;
+    justify-content: center; align-items: center;
+    gap: 12px; z-index: 10;
     text-align: center;
-    padding: 18px 20px;
+    padding: 16px;
     overflow-y: auto;
   }
-  #overlay h2 { font-size: 24px; color: #ffd54f; margin-top: 4px; }
+  #overlay h2 { font-size: 24px; color: #ffd54f; }
   #overlay p { font-size: 14px; line-height: 1.65; }
   #overlay input[type=text], #overlay input[type=password] {
     font-size: 17px; padding: 9px 14px; border-radius: 10px; border: none;
-    text-align: center; width: 230px; outline: none;
+    text-align: center; width: 220px;
   }
   #overlay button.primary {
     font-size: 19px; font-weight: bold;
@@ -86,56 +90,42 @@
     box-shadow: 0 4px 10px rgba(0,0,0,.4);
   }
   #overlay button.primary:hover { background: #ffca28; }
+  .teacher-btn {
+    font-size: 11px; padding: 4px 10px; border: none; border-radius: 12px;
+    background: #555f6e; color: #cfd6e0; cursor: pointer; opacity: .7;
+  }
+  .teacher-btn:hover { opacity: 1; background: #67707f; }
   #rankBox {
-    width: 100%; max-width: 380px;
-    background: rgba(255,255,255,.08);
-    border-radius: 12px; padding: 10px 12px;
+    background: rgba(255,255,255,.1); border-radius: 12px;
+    padding: 10px 16px; max-width: 430px; width: 100%;
   }
   #rankBox h3 { font-size: 15px; color: #80d8ff; margin-bottom: 6px; }
   #rankBox table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  #rankBox th, #rankBox td { padding: 4px 6px; border-bottom: 1px solid rgba(255,255,255,.12); }
-  #rankBox th { color: #ffd54f; font-weight: bold; }
+  #rankBox th, #rankBox td { padding: 3px 6px; text-align: center; }
+  #rankBox th { color: #ffd54f; border-bottom: 1px solid rgba(255,255,255,.3); }
   #rankBox tr.me td { color: #69f0ae; font-weight: bold; }
-  #rankBox .empty { color: #b0bec5; font-size: 13px; padding: 8px 0; }
-  .teacher-btn {
-    font-size: 11px;
-    padding: 4px 10px;
-    border: 1px solid rgba(255,255,255,.25);
-    border-radius: 12px;
-    background: rgba(120,120,120,.35);
-    color: #cfd8dc;
-    cursor: pointer;
-    margin-top: 2px;
-  }
-  .teacher-btn:hover { background: rgba(150,150,150,.45); }
-  #teacherPanel {
-    width: 100%; max-width: 380px;
-    background: rgba(255,255,255,.1);
-    border-radius: 12px; padding: 12px;
-    display: none;
-    flex-direction: column; gap: 8px;
-  }
-  #teacherPanel.open { display: flex; }
-  #teacherPanel h3 { font-size: 15px; color: #ffab91; }
-  #teacherPanel .row { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; }
-  #teacherPanel button {
-    font-size: 13px; padding: 7px 14px; border: none; border-radius: 8px;
-    cursor: pointer; font-weight: bold;
-  }
-  #teacherPanel .danger { background: #ef5350; color: #fff; }
-  #teacherPanel .danger:hover { background: #e53935; }
-  #teacherPanel .normal { background: #78909c; color: #fff; }
-  #teacherPanel select {
-    font-size: 13px; padding: 6px 8px; border-radius: 8px; border: none;
-  }
   #msg {
     position: absolute; top: 44%; left: 50%; transform: translate(-50%,-50%);
-    font-size: 28px; font-weight: bold; z-index: 8;
+    font-size: 30px; font-weight: bold; z-index: 8;
     pointer-events: none; opacity: 0; transition: opacity .2s;
     text-shadow: 0 2px 6px rgba(0,0,0,.6);
   }
   #msg.show { opacity: 1; }
   .hidden { display: none !important; }
+  #teacherPanel {
+    background: rgba(255,255,255,.08); border-radius: 12px; padding: 12px 16px;
+    max-width: 430px; width: 100%;
+  }
+  #teacherPanel h3 { font-size: 15px; color: #ff8a80; margin-bottom: 8px; }
+  #teacherPanel .row { display: flex; gap: 8px; justify-content: center; margin: 6px 0; flex-wrap: wrap; }
+  #teacherPanel button {
+    font-size: 13px; padding: 6px 14px; border: none; border-radius: 16px;
+    background: #ef5350; color: #fff; cursor: pointer;
+  }
+  #teacherPanel button.gray { background: #78909c; }
+  #teacherPanel ul { list-style: none; max-height: 150px; overflow-y: auto; font-size: 13px; }
+  #teacherPanel li { display: flex; justify-content: space-between; align-items: center; padding: 3px 6px; }
+  #teacherPanel li button { font-size: 11px; padding: 2px 10px; }
 </style>
 </head>
 <body>
@@ -151,24 +141,20 @@
 <div id="gameWrap">
   <div id="board">
     <svg viewBox="0 0 554 953" xmlns="http://www.w3.org/2000/svg">
-      <!-- 몸 실루엣 -->
       <path d="M300 10 c70 0 110 45 112 100 c1 35 -8 60 -5 80 c3 18 15 28 15 28 l-25 20 c0 0 40 25 80 55 c45 34 60 80 62 140 l5 520 H10 l5 -430 c2 -70 20 -120 70 -155 c45 -31 95 -55 120 -65 c18 -8 25 -20 26 -45 c0 0 -18 -25 -20 -70 C208 70 235 10 300 10 Z" fill="#d9d9d9"/>
       <path d="M395 115 q25 10 18 35 q-8 20 -30 18 l-15 -8 q20 -25 27 -45Z" fill="#cfcfcf"/>
 
-      <!-- 식도 -->
       <g id="org-esophagus" class="organ">
         <path d="M292 250 q-4 60 -2 130 q2 70 4 115 l22 0 q-4 -60 -4 -125 q0 -65 2 -120 Z" fill="#bdbdbd" stroke="#8d8d8d" stroke-width="2"/>
         <path d="M300 255 q-2 110 2 235" stroke="#a6a6a6" stroke-width="4" fill="none"/>
       </g>
 
-      <!-- 입 -->
       <g id="org-mouth" class="organ">
         <path d="M305 180 q45 -14 78 -6 q8 2 6 10 q-4 12 -40 16 q-36 4 -48 -6 q-4 -8 4 -14 Z" fill="#c9c9c9" stroke="#8d8d8d" stroke-width="2"/>
         <path d="M308 196 q40 10 72 -4" stroke="#8d8d8d" stroke-width="2.5" fill="none"/>
         <ellipse cx="345" cy="210" rx="30" ry="10" fill="#b5b5b5" stroke="#8d8d8d" stroke-width="2"/>
       </g>
 
-      <!-- 침샘 -->
       <g id="org-salivary" class="organ">
         <g stroke="#9e9e9e" stroke-width="1.5" fill="#e2e2e2">
           <circle cx="280" cy="150" r="9"/><circle cx="296" cy="142" r="9"/><circle cx="288" cy="162" r="9"/>
@@ -178,31 +164,26 @@
         </g>
       </g>
 
-      <!-- 간 -->
       <g id="org-liver" class="organ">
         <path d="M150 530 q-10 -55 55 -70 q70 -16 120 -5 q35 8 40 40 q4 35 -12 72 q-14 32 -55 40 q-60 12 -105 -14 q-38 -22 -43 -63 Z" fill="#9a9a9a" stroke="#6f6f6f" stroke-width="2.5"/>
         <path d="M180 520 q50 18 95 10 M200 560 q40 14 80 4" stroke="#7d7d7d" stroke-width="3" fill="none"/>
       </g>
 
-      <!-- 위 -->
       <g id="org-stomach" class="organ">
         <path d="M330 495 q55 -12 85 18 q28 28 20 70 q-8 44 -50 62 q-45 20 -80 2 q-20 -10 -16 -32 q4 -20 28 -26 q35 -9 44 -36 q8 -26 -10 -42 q-14 -12 -21 -16 Z" fill="#e8e8e8" stroke="#9e9e9e" stroke-width="2.5"/>
         <path d="M345 510 q40 0 55 30" stroke="#bdbdbd" stroke-width="4" fill="none"/>
       </g>
 
-      <!-- 쓸개 -->
       <g id="org-gallbladder" class="organ">
         <ellipse cx="233" cy="612" rx="20" ry="13" transform="rotate(-18 233 612)" fill="#8f8f8f" stroke="#666" stroke-width="2"/>
         <path d="M248 604 q14 -8 24 -4" stroke="#777" stroke-width="3" fill="none"/>
       </g>
 
-      <!-- 이자 -->
       <g id="org-pancreas" class="organ">
         <path d="M250 640 q45 -22 95 -16 q30 4 38 16 q4 10 -10 14 q-45 10 -85 6 q-30 -4 -38 -20 Z" fill="#d4d4d4" stroke="#9a9a9a" stroke-width="2"/>
         <path d="M262 640 q50 -12 110 -4" stroke="#aaa" stroke-width="2.5" fill="none"/>
       </g>
 
-      <!-- 큰창자 (항문 제외) -->
       <g id="org-largeint" class="organ">
         <path d="M160 700 q-2 -22 20 -24 l210 -8 q24 0 24 22 l4 130 q0 20 -18 22 M160 700 l-4 150 q0 18 14 22" fill="none" stroke="#c4c4c4" stroke-width="34" stroke-linecap="round"/>
         <g fill="#d6d6d6" stroke="#9e9e9e" stroke-width="1.5">
@@ -212,49 +193,102 @@
         </g>
       </g>
 
-      <!-- 항문 (동그라미 없이 관 모양만) -->
       <g id="org-anus" class="organ">
         <path d="M275 880 q10 18 8 40 l16 0 q-2 -22 8 -40 Z" fill="#c0c0c0" stroke="#9e9e9e" stroke-width="2"/>
       </g>
 
-      <!-- 작은창자 -->
       <g id="org-smallint" class="organ">
         <path d="M300 665 q-70 10 -90 50 q-18 40 20 55 q45 16 90 -5 q40 -20 20 -50 q-20 -28 -60 -10 q-45 20 -55 55 q-10 38 30 50 q50 14 95 -10 q35 -20 15 -50 q-18 -26 -58 -12 q-45 16 -58 50 q-12 36 25 50 q45 16 88 -5" fill="none" stroke="#e4e4e4" stroke-width="28" stroke-linecap="round"/>
         <path d="M300 665 q-70 10 -90 50 q-18 40 20 55 q45 16 90 -5 q40 -20 20 -50 q-20 -28 -60 -10 q-45 20 -55 55 q-10 38 30 50 q50 14 95 -10 q35 -20 15 -50 q-18 -26 -58 -12 q-45 16 -58 50 q-12 36 25 50 q45 16 88 -5" fill="none" stroke="#b8b8b8" stroke-width="2" stroke-linecap="round" opacity=".6"/>
       </g>
+
+      <!-- 1단계 전용: 기관 이름 라벨 -->
+      <g id="organLabels" class="hidden">
+        <path class="organ-label-line" d="M384 186 L440 160"/>
+        <text class="organ-label" x="444" y="158">입</text>
+        <path class="organ-label-line" d="M276 158 L210 130"/>
+        <text class="organ-label" x="156" y="128">침샘</text>
+        <path class="organ-label-line" d="M296 370 L220 360"/>
+        <text class="organ-label" x="170" y="362">식도</text>
+        <path class="organ-label-line" d="M170 505 L110 470"/>
+        <text class="organ-label" x="80" y="466">간</text>
+        <path class="organ-label-line" d="M420 530 L470 505"/>
+        <text class="organ-label" x="474" y="502">위</text>
+        <path class="organ-label-line" d="M222 608 L120 600"/>
+        <text class="organ-label" x="66" y="604">쓸개</text>
+        <path class="organ-label-line" d="M382 644 L470 640"/>
+        <text class="organ-label" x="474" y="644">이자</text>
+        <path class="organ-label-line" d="M412 790 L470 790"/>
+        <text class="organ-label" x="452" y="772">큰</text>
+        <text class="organ-label" x="442" y="812">창자</text>
+        <path class="organ-label-line" d="M250 770 L250 770"/>
+        <text class="organ-label" x="228" y="756">작은</text>
+        <text class="organ-label" x="228" y="778">창자</text>
+        <path class="organ-label-line" d="M300 912 L370 930"/>
+        <text class="organ-label" x="374" y="936">항문</text>
+      </g>
     </svg>
   </div>
   <div id="msg"></div>
+
   <div id="overlay">
-    <h2 id="ovTitle">소화계 기관 이름 맞히기</h2>
-    <p id="ovText">화면 위에서 <b>기관의 이름</b>이 떨어집니다.<br>
-       이름이 바닥에 닿기 전에 <b>소화계 그림에서 해당 기관</b>을 클릭하세요!<br>
-       한 단계의 <b>모든 기관(10개)</b>을 맞혀야 다음 단계로 넘어갑니다.<br><br>
-       ✅ 정답: 빠르게 맞힐수록 <b>1~5점</b><br>
-       ❌ 오답: 1~4단계 <b>3번 → 생명 -1</b> / 5~9단계 <b>2번 → 생명 -1</b> / 10단계부터 <b>1번 → 생명 -1</b> (단계마다 오답 횟수 초기화)<br>
-       💔 이름이 바닥에 닿으면 생명 -1<br>
-       대상 기관: 입, 침샘, 식도, 간, 위, 이자, 쓸개, 작은 창자, 큰 창자, 항문</p>
-    <input type="text" id="nickInput" maxlength="10" placeholder="닉네임을 입력하세요 (최대 10자)">
-    <button class="primary" id="startBtn">게임 시작</button>
-    <div id="rankBox">
-      <h3>🏆 명예의 전당 (TOP 10)</h3>
-      <div id="rankContent"></div>
+    <!-- 시작/닉네임 화면 -->
+    <div id="startScreen" style="display:flex;flex-direction:column;align-items:center;gap:12px;width:100%;">
+      <h2>소화계 기관 이름 맞히기</h2>
+      <p>화면 위에서 <b>기관의 이름</b>이 떨어집니다.<br>
+         이름이 바닥에 닿기 전에 <b>소화계 그림에서 해당 기관</b>을 클릭하세요!<br>
+         한 단계에서 <b>모든 기관(10개)</b>을 맞혀야 다음 단계로 넘어갑니다.<br>
+         <b>1단계</b>에서는 그림에 기관 이름이 함께 표시됩니다. (2단계부터 숨김)<br><br>
+         ✅ 정답: 빠르게 맞힐수록 <b>1~5점</b> &nbsp; 💔 바닥에 닿으면 생명 -1<br>
+         ❌ 오답: 1~4단계 3번 → 생명 -1 / 5~9단계 2번 → 생명 -1 / 10단계부터 1번 → 생명 -1<br>
+         (단계마다 오답 횟수 초기화)<br>
+         대상 기관: 입, 침샘, 식도, 간, 위, 이자, 쓸개, 작은 창자, 큰 창자, 항문</p>
+      <input type="text" id="nickInput" maxlength="10" placeholder="닉네임을 입력하세요">
+      <button class="primary" id="startBtn">게임 시작</button>
+      <div id="rankBox">
+        <h3>🏆 명예의 전당 TOP 10</h3>
+        <table>
+          <thead><tr><th>순위</th><th>닉네임</th><th>단계</th><th>점수</th></tr></thead>
+          <tbody id="rankBody"></tbody>
+        </table>
+      </div>
+      <button class="teacher-btn" id="teacherOpenBtn">🔒 교사 관리</button>
     </div>
-    <button class="teacher-btn" id="teacherBtn">🔒 교사 관리</button>
-    <div id="teacherPanel">
-      <h3>🔒 교사 관리</h3>
-      <div class="row" id="pwRow">
-        <input type="password" id="pwInput" placeholder="비밀번호" style="width:140px;font-size:14px;padding:7px 10px;border-radius:8px;border:none;text-align:center;">
-        <button class="normal" id="pwBtn">확인</button>
+
+    <!-- 교사 로그인 -->
+    <div id="teacherLogin" class="hidden" style="display:flex;flex-direction:column;align-items:center;gap:12px;">
+      <h2>🔒 교사 인증</h2>
+      <input type="password" id="teacherPw" placeholder="비밀번호 입력">
+      <div style="display:flex;gap:10px;">
+        <button class="primary" id="teacherLoginBtn">확인</button>
+        <button class="primary" id="teacherCancelBtn" style="background:#90a4ae;">취소</button>
       </div>
-      <div class="row hidden" id="adminRow1">
-        <select id="delSelect"><option value="">삭제할 닉네임 선택</option></select>
-        <button class="danger" id="delOneBtn">선택 삭제</button>
+      <p id="pwError" style="color:#ff8a80;"></p>
+    </div>
+
+    <!-- 교사 패널 -->
+    <div id="teacherPanel" class="hidden">
+      <h3>🛠 교사 관리 메뉴</h3>
+      <div class="row">
+        <button id="resetAllBtn">전체 순위 초기화</button>
+        <button class="gray" id="teacherCloseBtn">닫기</button>
       </div>
-      <div class="row hidden" id="adminRow2">
-        <button class="danger" id="resetBtn">순위 전체 초기화</button>
-        <button class="normal" id="closeAdminBtn">닫기</button>
+      <p style="font-size:13px;color:#ffd54f;margin:6px 0;">기록 개별 삭제</p>
+      <ul id="recordList"></ul>
+    </div>
+
+    <!-- 게임 종료 화면 -->
+    <div id="endScreen" class="hidden" style="display:flex;flex-direction:column;align-items:center;gap:12px;width:100%;">
+      <h2>게임 종료!</h2>
+      <p id="endSummary"></p>
+      <div id="rankBox2" style="background:rgba(255,255,255,.1);border-radius:12px;padding:10px 16px;max-width:430px;width:100%;">
+        <h3 style="font-size:15px;color:#80d8ff;margin-bottom:6px;">🏆 명예의 전당 TOP 10</h3>
+        <table style="width:100%;border-collapse:collapse;font-size:13px;">
+          <thead><tr><th style="color:#ffd54f;border-bottom:1px solid rgba(255,255,255,.3);padding:3px;">순위</th><th style="color:#ffd54f;border-bottom:1px solid rgba(255,255,255,.3);padding:3px;">닉네임</th><th style="color:#ffd54f;border-bottom:1px solid rgba(255,255,255,.3);padding:3px;">단계</th><th style="color:#ffd54f;border-bottom:1px solid rgba(255,255,255,.3);padding:3px;">점수</th></tr></thead>
+          <tbody id="rankBody2"></tbody>
+        </table>
       </div>
+      <button class="primary" id="retryBtn">다시 시작</button>
     </div>
   </div>
 </div>
@@ -274,33 +308,22 @@
     { id: 'org-anus',        name: '항문' }
   ];
   var TEACHER_PW = '0517';
-  var STORAGE_KEY = 'digestGameRanks_v1';
+  var LS_KEY = 'digestGameRanks_v1';
 
   var wrap = document.getElementById('gameWrap');
   var overlay = document.getElementById('overlay');
-  var startBtn = document.getElementById('startBtn');
-  var nickInput = document.getElementById('nickInput');
-  var nickHud = document.getElementById('nickHud');
+  var startScreen = document.getElementById('startScreen');
+  var endScreen = document.getElementById('endScreen');
+  var teacherLogin = document.getElementById('teacherLogin');
+  var teacherPanel = document.getElementById('teacherPanel');
   var scoreEl = document.getElementById('score');
   var livesEl = document.getElementById('lives');
   var levelEl = document.getElementById('level');
   var remainEl = document.getElementById('remain');
   var wrongEl = document.getElementById('wrongCnt');
+  var nickHud = document.getElementById('nickHud');
   var msgEl = document.getElementById('msg');
-  var ovTitle = document.getElementById('ovTitle');
-  var ovText = document.getElementById('ovText');
-  var rankContent = document.getElementById('rankContent');
-  var teacherBtn = document.getElementById('teacherBtn');
-  var teacherPanel = document.getElementById('teacherPanel');
-  var pwInput = document.getElementById('pwInput');
-  var pwBtn = document.getElementById('pwBtn');
-  var pwRow = document.getElementById('pwRow');
-  var adminRow1 = document.getElementById('adminRow1');
-  var adminRow2 = document.getElementById('adminRow2');
-  var delSelect = document.getElementById('delSelect');
-  var delOneBtn = document.getElementById('delOneBtn');
-  var resetBtn = document.getElementById('resetBtn');
-  var closeAdminBtn = document.getElementById('closeAdminBtn');
+  var organLabels = document.getElementById('organLabels');
 
   var nickname = '';
   var score = 0, lives = 3, level = 1;
@@ -312,116 +335,58 @@
   var lastTime = null;
   var msgTimer = null;
   var spawnTime = 0;
+  var lastEntryId = null;
 
-  // ===== 순위 저장 (localStorage) =====
   function loadRanks() {
-    try {
-      var raw = localStorage.getItem(STORAGE_KEY);
-      return raw ? JSON.parse(raw) : [];
-    } catch(e) { return []; }
+    try { return JSON.parse(localStorage.getItem(LS_KEY)) || []; }
+    catch(e) { return []; }
   }
   function saveRanks(r) {
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(r)); } catch(e) {}
+    try { localStorage.setItem(LS_KEY, JSON.stringify(r)); } catch(e) {}
   }
-  function addRank(name, sc, lv) {
-    var ranks = loadRanks();
-    var found = ranks.find(function(r){ return r.name === name; });
-    if (found) {
-      if (sc > found.score || (sc === found.score && lv > found.level)) {
-        found.score = sc; found.level = lv;
-      }
-    } else {
-      ranks.push({ name: name, score: sc, level: lv });
-    }
-    ranks.sort(function(a,b){ return b.score - a.score || b.level - a.level; });
-    saveRanks(ranks);
-  }
-  function renderRanks(highlightName) {
-    var ranks = loadRanks().slice(0, 10);
-    if (ranks.length === 0) {
-      rankContent.innerHTML = '<div class="empty">아직 기록이 없습니다. 첫 도전자가 되어 보세요!</div>';
-      return;
-    }
-    var html = '<table><tr><th>순위</th><th>닉네임</th><th>단계</th><th>점수</th></tr>';
-    ranks.forEach(function(r, i){
-      var medal = i===0?'🥇':i===1?'🥈':i===2?'🥉':(i+1);
-      var cls = (highlightName && r.name === highlightName) ? ' class="me"' : '';
-      html += '<tr'+cls+'><td>'+medal+'</td><td>'+escapeHtml(r.name)+'</td><td>'+r.level+'단계</td><td>'+r.score+'점</td></tr>';
+  function sortRanks(r) {
+    return r.slice().sort(function(a,b){
+      if (b.level !== a.level) return b.level - a.level;
+      return b.score - a.score;
     });
-    html += '</table>';
-    rankContent.innerHTML = html;
+  }
+  function renderRanks() {
+    var sorted = sortRanks(loadRanks()).slice(0, 10);
+    ['rankBody','rankBody2'].forEach(function(id){
+      var tbody = document.getElementById(id);
+      tbody.innerHTML = '';
+      if (sorted.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" style="padding:8px;color:#aaa;">아직 기록이 없습니다</td></tr>';
+        return;
+      }
+      sorted.forEach(function(e, i){
+        var tr = document.createElement('tr');
+        if (e.id === lastEntryId) tr.className = 'me';
+        var medal = i===0?'🥇':i===1?'🥈':i===2?'🥉':(i+1);
+        tr.innerHTML = '<td style="padding:3px;">'+medal+'</td><td style="padding:3px;">'+escapeHtml(e.nick)+'</td><td style="padding:3px;">'+e.level+'단계</td><td style="padding:3px;">'+e.score+'점</td>';
+        tbody.appendChild(tr);
+      });
+    });
   }
   function escapeHtml(s){
-    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  }
-
-  // ===== 교사 관리 =====
-  var adminOpen = false;
-  teacherBtn.addEventListener('click', function(){
-    adminOpen = !adminOpen;
-    teacherPanel.classList.toggle('open', adminOpen);
-    if (adminOpen) {
-      pwRow.classList.remove('hidden');
-      adminRow1.classList.add('hidden');
-      adminRow2.classList.add('hidden');
-      pwInput.value = '';
-    }
-  });
-  pwBtn.addEventListener('click', tryLogin);
-  pwInput.addEventListener('keydown', function(e){ if(e.key==='Enter') tryLogin(); });
-  function tryLogin(){
-    if (pwInput.value === TEACHER_PW) {
-      pwRow.classList.add('hidden');
-      adminRow1.classList.remove('hidden');
-      adminRow2.classList.remove('hidden');
-      fillDelSelect();
-    } else {
-      alert('비밀번호가 올바르지 않습니다.');
-      pwInput.value = '';
-    }
-  }
-  function fillDelSelect(){
-    var ranks = loadRanks();
-    delSelect.innerHTML = '<option value="">삭제할 닉네임 선택</option>';
-    ranks.forEach(function(r){
-      var op = document.createElement('option');
-      op.value = r.name;
-      op.textContent = r.name + ' ('+r.level+'단계 '+r.score+'점)';
-      delSelect.appendChild(op);
+    return String(s).replace(/[&<>"']/g, function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
     });
   }
-  delOneBtn.addEventListener('click', function(){
-    var name = delSelect.value;
-    if (!name) { alert('삭제할 닉네임을 선택하세요.'); return; }
-    if (!confirm('"'+name+'" 기록을 삭제할까요?')) return;
-    var ranks = loadRanks().filter(function(r){ return r.name !== name; });
-    saveRanks(ranks);
-    fillDelSelect();
-    renderRanks();
-  });
-  resetBtn.addEventListener('click', function(){
-    if (!confirm('모든 순위 기록을 초기화할까요?')) return;
-    saveRanks([]);
-    fillDelSelect();
-    renderRanks();
-  });
-  closeAdminBtn.addEventListener('click', function(){
-    adminOpen = false;
-    teacherPanel.classList.remove('open');
-  });
 
-  // ===== HUD =====
-  function updateHud() {
-    scoreEl.textContent = score;
-    livesEl.textContent = lives > 0 ? '❤'.repeat(lives) : '-';
-    levelEl.textContent = level;
-    remainEl.textContent = remaining.length;
-    wrongEl.textContent = wrongInLevel + ' / ' + wrongLimit();
-  }
   function wrongLimit() {
     if (level >= 10) return 1;
     if (level >= 5) return 2;
     return 3;
+  }
+
+  function updateHud() {
+    scoreEl.textContent = score;
+    livesEl.textContent = lives > 0 ? '\u2764'.repeat(lives) : '-';
+    levelEl.textContent = level;
+    remainEl.textContent = remaining.length;
+    wrongEl.textContent = wrongInLevel + '/' + wrongLimit();
+    nickHud.textContent = nickname || '-';
   }
 
   function showMsg(text, color) {
@@ -432,18 +397,29 @@
     msgTimer = setTimeout(function(){ msgEl.classList.remove('show'); }, 800);
   }
 
-  // ===== 단계/출제 =====
-  function startLevel() {
+  function setLabels() {
+    if (level === 1) organLabels.classList.remove('hidden');
+    else organLabels.classList.add('hidden');
+  }
+
+  function resetLevelOrgans() {
     remaining = ORGANS.slice();
     wrongInLevel = 0;
     ORGANS.forEach(function(o){
       document.getElementById(o.id).classList.remove('done');
     });
-    updateHud();
+    setLabels();
   }
+
   function pickOrgan() {
     return remaining[Math.floor(Math.random() * remaining.length)];
   }
+
+  function fallSpeed() {
+    // 기존보다 살짝 더 빠르게
+    return 62 + (level - 1) * 24;
+  }
+
   function spawnWord() {
     if (!playing) return;
     if (remaining.length === 0) return;
@@ -455,11 +431,11 @@
     var w = el.offsetWidth;
     var maxX = wrap.clientWidth - w - 10;
     el.style.left = (10 + Math.random() * Math.max(10, maxX)) + 'px';
-    var speed = 70 + (level - 1) * 26; // px/초
-    current = { organ: organ, el: el, y: -40, speed: speed };
+    current = { organ: organ, el: el, y: -40, speed: fallSpeed() };
     el.style.top = current.y + 'px';
     spawnTime = performance.now();
   }
+
   function removeWord() {
     if (current && current.el && current.el.parentNode) {
       current.el.parentNode.removeChild(current.el);
@@ -472,13 +448,14 @@
     if (lastTime === null) lastTime = ts;
     var dt = (ts - lastTime) / 1000;
     lastTime = ts;
+
     if (current) {
       current.y += current.speed * dt;
       current.el.style.top = current.y + 'px';
       if (current.y > wrap.clientHeight - 30) {
         lives--;
         updateHud();
-        showMsg('💔 놓쳤어요! 정답: ' + current.organ.name, '#ff8a80');
+        showMsg('\uD83D\uDC94 놓쳤어요! 정답: ' + current.organ.name, '#ff8a80');
         flashOrgan(current.organ.id, 'flash-ok');
         removeWord();
         if (lives <= 0) { endGame(); return; }
@@ -497,11 +474,9 @@
     setTimeout(function(){ g.classList.remove(cls); }, 650);
   }
 
-  // 속도 기반 점수: 빠르게 맞힐수록 5점 → 1점
-  function calcPoint() {
-    var elapsed = (performance.now() - spawnTime) / 1000;
-    var fallDuration = (wrap.clientHeight + 10) / (current ? current.speed : 70);
-    var ratio = elapsed / fallDuration;
+  function speedPoints() {
+    // 떨어진 비율 기준: 빠르게 맞힐수록 높은 점수 (1~5점)
+    var ratio = Math.max(0, Math.min(1, current.y / (wrap.clientHeight - 30)));
     if (ratio < 0.2) return 5;
     if (ratio < 0.4) return 4;
     if (ratio < 0.6) return 3;
@@ -515,22 +490,24 @@
     if (g.classList.contains('done')) return;
 
     if (organId === current.organ.id) {
-      var pt = calcPoint();
-      score += pt;
+      var pts = speedPoints();
+      score += pts;
       g.classList.add('done');
       flashOrgan(organId, 'flash-ok');
-      showMsg('⭕ 정답! +' + pt, '#69f0ae');
+      showMsg('\u2B55 정답! +' + pts, '#69f0ae');
       remaining = remaining.filter(function(o){ return o.id !== organId; });
       removeWord();
       updateHud();
+
       if (remaining.length === 0) {
         level++;
-        showMsg('🚀 단계 ' + level + ' 시작! 더 빨라집니다', '#ffd54f');
+        showMsg('\uD83D\uDE80 단계 ' + level + '! 모든 기관 완료!', '#ffd54f');
         setTimeout(function(){
           if (!playing) return;
-          startLevel();
+          resetLevelOrgans();
+          updateHud();
           spawnWord();
-        }, 1200);
+        }, 1100);
       } else {
         setTimeout(function(){ if (playing && !current) spawnWord(); }, 600);
       }
@@ -538,25 +515,30 @@
       wrongInLevel++;
       flashOrgan(organId, 'flash-bad');
       if (wrongInLevel >= wrongLimit()) {
-        lives--;
         wrongInLevel = 0;
-        showMsg('❌ 오답! 💔 생명 -1', '#ff8a80');
-        if (lives <= 0) { updateHud(); endGame(); return; }
+        lives--;
+        showMsg('\u274C 오답! 생명 -1', '#ff8a80');
+        updateHud();
+        if (lives <= 0) { endGame(); return; }
       } else {
-        showMsg('❌ 오답! (' + wrongInLevel + '/' + wrongLimit() + ')', '#ff8a80');
+        showMsg('\u274C 오답! (' + wrongInLevel + '/' + wrongLimit() + ')', '#ff8a80');
+        updateHud();
       }
-      updateHud();
     }
   }
 
   function startGame() {
-    var name = nickInput.value.trim();
-    if (!name) { alert('닉네임을 입력하세요!'); nickInput.focus(); return; }
-    nickname = name;
-    nickHud.textContent = nickname;
+    var nick = document.getElementById('nickInput').value.trim();
+    if (!nick) {
+      document.getElementById('nickInput').placeholder = '닉네임을 꼭 입력하세요!';
+      document.getElementById('nickInput').focus();
+      return;
+    }
+    nickname = nick;
     score = 0; lives = 3; level = 1;
+    resetLevelOrgans();
     removeWord();
-    startLevel();
+    updateHud();
     overlay.classList.add('hidden');
     playing = true;
     lastTime = null;
@@ -568,17 +550,88 @@
     playing = false;
     cancelAnimationFrame(rafId);
     removeWord();
-    addRank(nickname, score, level);
+    organLabels.classList.add('hidden');
+
+    var ranks = loadRanks();
+    lastEntryId = Date.now() + '_' + Math.random().toString(36).slice(2,7);
+    ranks.push({ id: lastEntryId, nick: nickname, level: level, score: score });
+    saveRanks(ranks);
+
+    var sorted = sortRanks(ranks);
+    var myRank = sorted.findIndex(function(e){ return e.id === lastEntryId; }) + 1;
+
+    document.getElementById('endSummary').innerHTML =
+      '<b style="color:#ffd54f;">' + escapeHtml(nickname) + '</b>님의 결과<br>' +
+      '최종 점수: <b style="color:#ffd54f;font-size:20px;">' + score + '점</b> / 도달 단계: ' + level + '단계<br>' +
+      '전체 순위: <b style="color:#69f0ae;font-size:18px;">' + myRank + '위</b> (총 ' + sorted.length + '명)';
+
+    renderRanks();
+    startScreen.classList.add('hidden');
+    startScreen.style.display = 'none';
+    endScreen.classList.remove('hidden');
+    endScreen.style.display = 'flex';
     overlay.classList.remove('hidden');
-    ovTitle.textContent = '게임 종료!';
-    ovText.innerHTML =
-      '<b>' + escapeHtml(nickname) + '</b>님의 결과<br>' +
-      '최종 점수: <b style="color:#ffd54f;font-size:22px">' + score + '점</b> / 도달 단계: <b>' + level + '단계</b><br>' +
-      '아래 명예의 전당에서 순위를 확인하세요!';
-    startBtn.textContent = '다시 시작';
-    renderRanks(nickname);
   }
 
+  function backToStart() {
+    endScreen.classList.add('hidden');
+    endScreen.style.display = 'none';
+    teacherLogin.classList.add('hidden');
+    teacherLogin.style.display = 'none';
+    teacherPanel.classList.add('hidden');
+    startScreen.classList.remove('hidden');
+    startScreen.style.display = 'flex';
+    renderRanks();
+    overlay.classList.remove('hidden');
+  }
+
+  // ===== 교사 관리 =====
+  function openTeacherLogin() {
+    startScreen.classList.add('hidden');
+    startScreen.style.display = 'none';
+    endScreen.classList.add('hidden');
+    endScreen.style.display = 'none';
+    document.getElementById('teacherPw').value = '';
+    document.getElementById('pwError').textContent = '';
+    teacherLogin.classList.remove('hidden');
+    teacherLogin.style.display = 'flex';
+  }
+  function tryTeacherLogin() {
+    if (document.getElementById('teacherPw').value === TEACHER_PW) {
+      teacherLogin.classList.add('hidden');
+      teacherLogin.style.display = 'none';
+      renderRecordList();
+      teacherPanel.classList.remove('hidden');
+    } else {
+      document.getElementById('pwError').textContent = '비밀번호가 틀렸습니다.';
+    }
+  }
+  function renderRecordList() {
+    var ul = document.getElementById('recordList');
+    ul.innerHTML = '';
+    var sorted = sortRanks(loadRanks());
+    if (sorted.length === 0) {
+      ul.innerHTML = '<li style="justify-content:center;color:#aaa;">기록이 없습니다</li>';
+      return;
+    }
+    sorted.forEach(function(e){
+      var li = document.createElement('li');
+      var span = document.createElement('span');
+      span.textContent = e.nick + ' — ' + e.level + '단계 / ' + e.score + '점';
+      var btn = document.createElement('button');
+      btn.textContent = '삭제';
+      btn.addEventListener('click', function(){
+        var r = loadRanks().filter(function(x){ return x.id !== e.id; });
+        saveRanks(r);
+        renderRecordList();
+        renderRanks();
+      });
+      li.appendChild(span); li.appendChild(btn);
+      ul.appendChild(li);
+    });
+  }
+
+  // 이벤트 등록
   ORGANS.forEach(function(o) {
     var g = document.getElementById(o.id);
     g.addEventListener('click', function(e) {
@@ -586,11 +639,28 @@
       handleOrganClick(o.id);
     });
   });
-
-  startBtn.addEventListener('click', startGame);
-  nickInput.addEventListener('keydown', function(e){ if(e.key==='Enter') startGame(); });
+  document.getElementById('startBtn').addEventListener('click', startGame);
+  document.getElementById('nickInput').addEventListener('keydown', function(e){
+    if (e.key === 'Enter') startGame();
+  });
+  document.getElementById('retryBtn').addEventListener('click', backToStart);
+  document.getElementById('teacherOpenBtn').addEventListener('click', openTeacherLogin);
+  document.getElementById('teacherLoginBtn').addEventListener('click', tryTeacherLogin);
+  document.getElementById('teacherPw').addEventListener('keydown', function(e){
+    if (e.key === 'Enter') tryTeacherLogin();
+  });
+  document.getElementById('teacherCancelBtn').addEventListener('click', backToStart);
+  document.getElementById('teacherCloseBtn').addEventListener('click', backToStart);
+  document.getElementById('resetAllBtn').addEventListener('click', function(){
+    if (confirm('정말 전체 순위를 초기화할까요?')) {
+      saveRanks([]);
+      renderRecordList();
+      renderRanks();
+    }
+  });
 
   renderRanks();
+  updateHud();
 })();
 </script>
 </body>
